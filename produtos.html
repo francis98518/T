@@ -235,10 +235,13 @@
 
                 if (!updateUsuarioResponse.ok) throw new Error('Erro ao atualizar o saldo do usuário');
 
+                // Criação do produto, incluindo os dados necessários
                 const produto = {
                     nome: nomeProduto,
-                    retorno: retornoDiario,
-                    preco: precoProduto
+                    preco: precoProduto,
+                    retorno: retornoDiario,        // Renda diária (retorno)
+                    usuarioId: userId,             // ID do usuário
+                    dataCompra: new Date().toISOString(), // Data de compra (formato ISO)
                 };
 
                 const addProdutoResponse = await fetch('https://meuappi.onrender.com/produtos', {
@@ -260,5 +263,3 @@
     }
 </script>
 
-</body>
-</html>
