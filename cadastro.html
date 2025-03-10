@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en" data-dpr="1" style="font-size: 38.1px;">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <title>T-Mobile Digital</title>
+
+    <!-- Prefetch and Preload CSS Files -->
+    <link href="https://t-mob.pro/public/css/home.ecc31d34.css" rel="prefetch">
+    <link href="https://t-mob.pro/public/css/app.bd822123.css" rel="preload" as="style">
+    <link href="https://t-mob.pro/public/css/chunk-vendors.331f546b.css" rel="preload" as="style">
+
+    <!-- Stylesheets -->
+    <link href="https://t-mob.pro/public/css/chunk-vendors.331f546b.css" rel="stylesheet">
+    <link href="https://t-mob.pro/public/css/app.bd822123.css" rel="stylesheet">
+    <link href="https://t-mob.pro/public/css/home.ecc31d34.css" rel="stylesheet">
+    <link href="https://t-mob.pro/public/assets/custom.css" rel="stylesheet">
+
+    <!-- Notification Styles -->
+    <link rel="stylesheet" href="https://t-mob.pro/public/msg/notifIt.css">
+
+    <style>
+        /* Global styles for input fields and buttons */
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            background-color: #f4f7fa;
+            color: #333;
+        }
+
+        .login-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .logo img {
+            max-width: 200px; /* Logotipo com tamanho adequado */
+            width: 100%;
+            height: auto;
+            margin-bottom: 40px;
+        }
+
+        /* Form container styles */
+        .form-box {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Label styles */
+        .label {
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        /* Input fields styling */
+        .input-box {
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            font-size: 16px;
+            color: #333;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        /* Focus effect for inputs */
+        .input-box input:focus {
+            border-color: #007BFF;
+            background-color: #fff;
+            outline: none;
+        }
+
+        .input-box .left {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        /* Button styling */
+        .btn {
+            padding: 12px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            width: 100%;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Button hover effect */
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .btn:active {
+            background-color: #004085;
+        }
+
+        /* Agreement checkbox and text */
+        .agreement-box {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+            justify-content: center;
+        }
+
+        .agreement-box .van-checkbox__icon {
+            margin-right: 10px;
+        }
+
+        .text {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .text a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        .text a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app" style="padding-bottom: 1.33333rem;">
+        <!-- Loading Toast -->
+        <div class="van-toast van-toast--middle van-toast--loading" style="z-index: 2005; display: none;">
+            <div class="van-loading van-loading--circular van-toast__loading">
+                <span class="van-loading__spinner van-loading__spinner--circular">
+                    <svg viewBox="25 25 50 50" class="van-loading__circular">
+                        <circle cx="50" cy="50" r="20" fill="none"></circle>
+                    </svg>
+                </span>
+            </div>
+        </div>
+    
+        <!-- Registration Page -->
+        <div class="login-page">
+            <div class="logo">
+                <img src="https://t-mob.pro/public/upload/package/1740524916Z1L.png" alt="Logo">
+            </div>
+    
+            <div class="content">
+                <form id="registration-form" class="form-box">
+                    <input type="hidden" name="_token" value="dI9JZejSlDKFbfQ80ul9xu6oCkVhzsraIu1vENTq">
+    
+                    <div class="label">Registre-se</div>
+    
+                    <!-- Nome Input -->
+                    <div class="input-box">
+                        <div class="left">Nome Completo</div>
+                        <input type="text" placeholder="Insira seu nome" name="nome" id="nome" required>
+                    </div>
+    
+                    <!-- Phone Input -->
+                    <div class="input-box">
+                        <div class="left">Telefone</div>
+                        <input type="text" placeholder="Insira o número de telefone" name="telefone" id="telefone" required>
+                    </div>
+    
+                    <!-- Password Input -->
+                    <div class="input-box">
+                        <div class="left">Senha</div>
+                        <input type="password" placeholder="Insira sua senha" name="senha" id="senha" required>
+                    </div>
+    
+                    <!-- Invite Code Input -->
+                    <div class="input-box">
+                        <div class="left">Código de convite</div>
+                        <input type="text" placeholder="Código de convite (opcional)" name="codigo_convite_referido" id="codigo_convite_referido" value="">
+                    </div>
+    
+                    <!-- Confirm Button -->
+                    <div class="btn register" id="register-btn">Confirmar</div>
+    
+                    <!-- Login Button -->
+                    <div class="btn login" onclick="goLink('index.html')">Login</div>
+                    <script>
+  function goLink(url) {
+    window.location.href = url;
+  }
+</script>
+
+    
+                    <div class="agreement-box">
+                        <div role="checkbox" tabindex="0" aria-checked="true" class="van-checkbox">
+                            <div class="van-checkbox__icon van-checkbox__icon--round van-checkbox__icon--checked">
+                                <i class="van-icon van-icon-success"></i>
+                            </div>
+                        </div>
+                        <div class="text">Concordo com os <a href="#">termos de serviço</a></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://t-mob.pro/public/msg/notifIt.js"></script>
+    
+    <script>
+        // Função para pegar o código da URL e preencher o campo de código de convite
+        function getInviteCodeFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const inviteCode = urlParams.get('codigo_convite');
+            if (inviteCode) {
+                document.getElementById('codigo_convite_referido').value = inviteCode;
+            }
+        }
+    
+        // Função para gerar o link de convite
+        function generateInviteLink(codigo_convite) {
+            return `https://seusite.com/cadastro.html?codigo_convite=${codigo_convite}`;
+        }
+    
+        // Função para verificar se o telefone já está registrado
+        async function checkPhoneExists(telefone) {
+            try {
+                // Realizando a requisição à API para verificar o telefone
+                const response = await fetch(`https://meuappi.onrender.com/usuarios?telefone=${telefone}`);
+    
+                // Certifique-se de que a resposta é válida
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    // Verificando se algum usuário com o telefone já existe
+                    if (data && Array.isArray(data) && data.length > 0) {
+                        for (let user of data) {
+                            if (user.telefone === telefone) {
+                                return true; // Telefone já existe
+                            }
+                        }
+                    }
+                    return false; // Caso contrário, o telefone não existe
+                } else {
+                    throw new Error('Erro ao consultar a API');
+                }
+            } catch (error) {
+                console.error('Erro ao verificar o telefone:', error);
+                return false; // Retorna false em caso de erro, para continuar o fluxo
+            }
+        }
+    
+        // Função de cadastro
+        async function registerUser(event) {
+            event.preventDefault(); // Evita o envio do formulário
+    
+            const nome = document.getElementById('nome').value;
+            const telefone = document.getElementById('telefone').value;
+            const senha = document.getElementById('senha').value;
+            const codigo_convite_referido = document.getElementById('codigo_convite_referido').value || '';
+    
+            // Validação de campos obrigatórios
+            if (!nome || !telefone || !senha) {
+                notice('Todos os campos são obrigatórios!', 'error');
+                return;
+            }
+    
+            // Validação da senha
+            if (senha.length < 6) {
+                notice('A senha deve ter pelo menos 6 dígitos.', 'error');
+                return;
+            }
+    
+            // Validação do telefone
+            if (!/^\d{9}$/.test(telefone) || telefone[0] !== '9') {
+                notice('O número de telefone deve ter 9 dígitos e começar com 9.', 'error');
+                return;
+            }
+    
+            // Verificar se o telefone já existe
+            const telefoneExistente = await checkPhoneExists(telefone);
+            if (telefoneExistente) {
+                notice('Este número de telefone já está cadastrado.', 'error');
+                return;
+            }
+    
+            const id = generateUniqueId();  // Gerando id único
+            const codigo_convite = generateInviteCode();  // Gerando código de convite único
+            const saldo = 0;  // Valor fixo conforme sua estrutura
+    
+            // Objeto com dados do usuário
+            const userData = {
+                id: id,
+                nome: nome,
+                telefone: telefone,
+                senha: senha,
+                codigo_convite: codigo_convite,
+                codigo_convite_referido: codigo_convite_referido,
+                saldo: saldo
+            };
+    
+            // Enviar dados para a API
+            try {
+                const response = await fetch('https://meuappi.onrender.com/usuarios', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                });
+    
+                if (response.ok) {
+                    const data = await response.json();
+                    // Sucesso
+                    notice('Cadastro realizado com sucesso!', 'success', 'login.html');
+                } else {
+                    // Erro na resposta da API
+                    notice('Ocorreu um erro no cadastro. Tente novamente.', 'error');
+                }
+            } catch (error) {
+                // Erro ao fazer a requisição
+                notice('Ocorreu um erro, tente novamente.', 'error');
+                console.error('Error:', error);
+            }
+        }
+    
+        // Função para gerar um id único
+        function generateUniqueId() {
+            return Math.random().toString(36).substr(2, 6); // Exemplo de id único
+        }
+    
+        // Função para gerar um código de convite único
+        function generateInviteCode() {
+            return Math.random().toString(36).substr(2, 9); // Exemplo de código único
+        }
+    
+        // Função para exibir uma notificação
+        function notice(message, type = null, url = null) {
+            var delay = 5000; // 5 segundos de delay
+            notif({
+                type: type ? type : 'success',
+                msg: message ? message : 'Mensagem vazia',
+                position: "center",
+                opacity: 0.8,
+                time: delay
+            });
+    
+            if (url) {
+                setTimeout(function () {
+                    window.location.href = url;
+                }, delay);
+            }
+        }
+    
+        // Chama a função ao carregar a página
+        window.onload = function() {
+            getInviteCodeFromURL();
+        };
+    
+        // Adicionar o evento de clique no botão de cadastro
+        document.getElementById('register-btn').addEventListener('click', registerUser);
+    </script>
+    

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retiradas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+        }
+
+        .container {
+            width: 90%;
+            margin: auto;
+            max-width: 500px;
+            padding: 20px;
+        }
+
+        .info-card {
+            background-color: #d9006c;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .info-card h2 {
+            font-size: 18px;
+            margin: 0 0 10px 0;
+        }
+
+        .info-card p {
+            font-size: 14px;
+            margin: 5px 0;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-size: 14px;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .botao {
+            display: block;
+            width: 100%;
+            background: #d9006c;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Estilo do Toast - Centralizado */
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%); /* Centraliza o toast */
+            font-size: 17px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Logotipo no canto direito */
+        .logo-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+        }
+
+        .logo-container img {
+            width: 50px; /* Ajuste o tamanho conforme necessário */
+            height: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Logotipo no canto direito -->
+<div class="logo-container">
+    <a href="historico-retiradas.html">
+        <img src="https://t-mob.pro/public/img/details.b5602bf4.png" alt="Logo">
+    </a>
+</div>
+
+<div class="container">
+    <h1>Retirar Fundos</h1>
+
+    <!-- Cartão Informativo -->
+    <div class="info-card">
+        <h2>Informações sobre os Saques</h2>
+        <p>Os saques podem ser feitos de <strong>segunda a domingo</strong>.</p>
+        <p>Você pode fazer <strong>vários saques por dia</strong>.</p>
+        <p>A taxa de saque é de <strong>12%</strong> sobre o valor retirado.</p>
+        <p>A transferência pode levar até <strong>24 horas</strong> para ser concluída.</p>
+    </div>
+
+    <!-- Formulário de Retirada -->
+    <div class="form-group">
+        <label for="iban">IBAN</label>
+        <input type="text" id="iban" placeholder="Digite o IBAN">
+    </div>
+
+    <div class="form-group">
+        <label for="nome">Nome</label>
+        <input type="text" id="nome" placeholder="Digite seu nome">
+    </div>
+
+    <div class="form-group">
+        <label for="valor">Valor</label>
+        <input type="number" id="valor" placeholder="Digite o valor a ser retirado" min="0">
+    </div>
+
+    <button class="botao" onclick="retirar()">Retirar</button>
+</div>
+
+<!-- Toast Notification -->
+<div id="toast" class="toast"></div>
+
+<script>
+    // Função para mostrar o Toast
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = "toast show"; // Adiciona a classe "show" para exibir o toast
+
+        // Remove o toast após 3 segundos
+        setTimeout(function () {
+            toast.className = toast.className.replace("show", "");
+        }, 3000);
+    }
+
+    async function retirar() {
+        const iban = document.getElementById('iban').value.trim();
+        const nome = document.getElementById('nome').value.trim();
+        const valor = parseFloat(document.getElementById('valor').value.trim());
+
+        // Verificar se os campos estão preenchidos corretamente
+        if (!iban || !nome || isNaN(valor) || valor <= 0) {
+            showToast('Por favor, preencha todos os campos corretamente.');
+            return;
+        }
+
+        // Verificar se o valor é maior ou igual ao valor mínimo
+        const valorMinimo = 2500;
+        if (valor < valorMinimo) {
+            showToast(`O valor mínimo para saque é AKZ ${valorMinimo.toFixed(2)}.`);
+            return;
+        }
+
+        const userId = localStorage.getItem('user_id');
+        if (!userId) {
+            showToast('Usuário não logado. Faça o login para continuar.');
+            return;
+        }
+
+        try {
+            // 1. Verificar saldo do usuário
+            const responseUsuario = await fetch(`https://meuappi.onrender.com/usuarios/${userId}`);
+            const usuario = await responseUsuario.json();
+
+            // Verificar se o saldo é suficiente
+            if (usuario.saldo < valor) {
+                showToast('Saldo insuficiente para realizar a retirada.');
+                return;
+            }
+
+            // 2. Deduzir 12% do valor
+            const valorComDesconto = valor * 0.88; // Desconto de 12%
+
+            // Atualizar saldo do usuário no backend
+            const novoSaldo = usuario.saldo - valor;
+            const usuarioAtualizado = { saldo: novoSaldo };
+
+            const updateUsuarioResponse = await fetch(`https://meuappi.onrender.com/usuarios/${userId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(usuarioAtualizado)
+            });
+
+            if (!updateUsuarioResponse.ok) {
+                showToast('Erro ao atualizar saldo. Tente novamente.');
+                return;
+            }
+
+            // 3. Registrar a retirada no backend com status 'pendente' (false)
+            const retirada = {
+                usuarioId: userId,
+                iban: iban,
+                nome: nome,
+                valor: valorComDesconto,  // Valor com 12% de desconto
+                data: new Date().toISOString(),  // Registrar data da retirada
+                status: false  // Status inicial como 'pendente'
+            };
+
+            const addRetiradaResponse = await fetch('https://meuappi.onrender.com/retiradas', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(retirada)
+            });
+
+            if (!addRetiradaResponse.ok) {
+                showToast('Erro ao registrar a retirada. Tente novamente.');
+                return;
+            }
+
+            // Sucesso: Exibir toast de sucesso
+            showToast(`Retirada realizada com sucesso! Valor real retirado: AKZ ${valorComDesconto.toFixed(2)}. Status: Pendente.`);
+
+        } catch (error) {
+            console.error('Erro:', error);
+            showToast('Ocorreu um erro. Tente novamente.');
+        }
+    }
+</script>
+
+</body>
+</html>

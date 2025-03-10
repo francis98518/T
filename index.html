@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" data-dpr="1" style="font-size: 38.1px;">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <title>Gowmax</title>
+
+    <link href="https://t-mob.pro/public/css/home.ecc31d34.css" rel="prefetch">
+    <link href="https://t-mob.pro/public/css/app.bd822123.css" rel="preload" as="style">
+    <link href="https://t-mob.pro/public/css/chunk-vendors.331f546b.css" rel="preload" as="style">
+    <link href="https://t-mob.pro/public/css/chunk-vendors.331f546b.css" rel="stylesheet">
+    <link href="https://t-mob.pro/public/css/app.bd822123.css" rel="stylesheet">
+    <link href="https://t-mob.pro/public/css/home.ecc31d34.css" rel="stylesheet">
+    <link href="https://t-mob.pro/public/assets/custom.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://t-mob.pro/public/msg/notifIt.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            background-color: #f4f7fa;
+            color: #333;
+        }
+        .login-page { display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .logo img { max-width: 120px; width: 100%; height: auto; margin-bottom: 40px; }
+        .form-box { background-color: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); width: 100%; max-width: 400px; }
+        .label { font-weight: bold; font-size: 18px; color: #333; margin-bottom: 10px; text-align: center; }
+        .input-box { margin-bottom: 20px; width: 100%; }
+        .input-box input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9; font-size: 16px; color: #333; box-sizing: border-box; transition: all 0.3s ease; }
+        .input-box input:focus { border-color: #007BFF; background-color: #fff; outline: none; }
+        .input-box .left { font-size: 14px; color: #666; margin-bottom: 5px; display: block; }
+        .btn { padding: 12px; background-color: #007BFF; color: #fff; border: none; border-radius: 8px; font-size: 16px; width: 100%; cursor: pointer; text-align: center; margin-top: 10px; transition: background-color 0.3s ease; }
+        .btn:hover { background-color: #0056b3; }
+        .btn:active { background-color: #004085; }
+        .agreement-box { display: flex; align-items: center; margin-top: 15px; justify-content: center; }
+        .agreement-box .van-checkbox__icon { margin-right: 10px; }
+        .text { font-size: 14px; color: #555; }
+        .text a { color: #007BFF; text-decoration: none; }
+        .text a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div id="app" style="padding-bottom: 1.33333rem;">
+    <div class="van-toast van-toast--middle van-toast--loading" style="z-index: 2005; display: none;">
+        <div class="van-loading van-loading--circular van-toast__loading">
+            <span class="van-loading__spinner van-loading__spinner--circular">
+                <svg viewBox="25 25 50 50" class="van-loading__circular">
+                    <circle cx="50" cy="50" r="20" fill="none"></circle>
+                </svg>
+            </span>
+        </div>
+    </div>
+
+    <div class="login-page">
+        <div class="logo">
+            <img src="https://t-mob.pro/public/upload/package/1740524916Z1L.png" alt="Logo">
+        </div>
+
+        <div class="content">
+            <form id="login-form" class="form-box" onsubmit="event.preventDefault(); login();">
+                <div class="label">Login</div>
+
+                <div class="input-box">
+                    <div class="left">Telefone</div>
+                    <input type="text" placeholder="Insira o número de telefone" name="telefone" id="telefone">
+                </div>
+
+                <div class="input-box">
+                    <div class="left">Senha</div>
+                    <input type="password" placeholder="Insira sua senha" name="senha" id="senha">
+                </div>
+
+                <div class="btn login" onclick="login()">Login</div>
+
+                <div class="btn register" onclick="window.location.href='cadastro.html'">Cadastre-se</div>
+
+                <div class="agreement-box">
+                    <div role="checkbox" tabindex="0" aria-checked="true" class="van-checkbox">
+                        <div class="van-checkbox__icon van-checkbox__icon--round van-checkbox__icon--checked">
+                            <i class="van-icon van-icon-success"></i>
+                        </div>
+                    </div>
+                    <div class="text">
+                        Concordo com os <a href="#">termos de serviço</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://t-mob.pro/public/msg/notifIt.js"></script>
+
+<script>
+    function login() {
+        var telefone = document.getElementById('telefone').value.trim();
+        var senha = document.getElementById('senha').value.trim();
+
+        // Verifique se os campos estão preenchidos
+        if (telefone === '' || senha === '') {
+            notif({
+                msg: 'Por favor, preencha todos os campos.',
+                type: 'error',
+                position: 'center',
+                autohide: true,
+                duration: 3000
+            });
+            return;
+        }
+
+        // Envia a requisição para o servidor remoto
+        fetch('https://meuappi.onrender.com/usuarios?telefone=' + telefone)  // URL da sua API
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);  // Verifique a resposta da API
+
+                if (data.length === 0) {
+                    notif({
+                        msg: 'Usuário não encontrado.',
+                        type: 'error',
+                        position: 'center',
+                        autohide: true,
+                        duration: 3000
+                    });
+                    return;
+                }
+
+                // Verificar a senha de todos os usuários com o telefone fornecido
+                var user = data.find(u => u.senha === senha);
+
+                if (user) {
+                    // Se o login for bem-sucedido, salva a estrutura completa do usuário no localStorage
+                    console.log('Dados do usuário:', user);  // Verifique se os dados estão corretos
+                    localStorage.setItem("user_data", JSON.stringify(user));  // Salvando todos os dados do usuário
+
+                    // Também salva apenas o ID do usuário para ser usado posteriormente
+                    localStorage.setItem("user_id", user.id);  // Armazena somente o ID
+
+                    // Exibe a notificação de sucesso
+                    notif({
+                        msg: 'Login bem-sucedido!',
+                        type: 'success',
+                        position: 'center',
+                        autohide: true,
+                        duration: 3000
+                    });
+
+                    // Redireciona para a página home
+                    window.location.href = 'home.html';
+                } else {
+                    notif({
+                        msg: 'Senha incorreta!',
+                        type: 'error',
+                        position: 'center',
+                        autohide: true,
+                        duration: 3000
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao realizar o login:', error);
+                notif({
+                    msg: 'Ocorreu um erro. Tente novamente.',
+                    type: 'error',
+                    position: 'center',
+                    autohide: true,
+                    duration: 3000
+                });
+            });
+    }
+</script>

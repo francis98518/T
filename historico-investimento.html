@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico de Investimentos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #d9006c;
+            padding: 15px 20px;
+            color: white;
+        }
+        .header .logo {
+            width: 50px;
+            height: auto;
+        }
+        .header .title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .container {
+            width: 90%;
+            margin: auto;
+            max-width: 500px;
+            padding: 20px 0;
+        }
+        .investimento {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .investimento h2 {
+            color: #d9006c;
+            font-size: 18px;
+        }
+        .detalhes {
+            font-size: 14px;
+            color: #555;
+        }
+        .contagem {
+            font-size: 16px;
+            color: #ff6600;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Cabeçalho com logotipo e título -->
+<div class="header">
+    <a href="perfil.html">
+        <img src="https://t-mob.pro/public/img/en_us.fc5456b0.png" 
+             alt="Logo" class="logo">
+    </a>
+    <span class="title">Investimentos</span>
+</div>
+
+<!-- Conteúdo do histórico de investimentos -->
+<div class="container">
+    <h1></h1>
+    <div id="investimentos-lista">
+        <!-- Lista de investimentos será carregada aqui -->
+    </div>
+</div>
+
+<script>
+    // Função para calcular a contagem regressiva de 45 dias
+    function calcularContagemRegressiva(dataCompra) {
+        const dataLimite = new Date(dataCompra);
+        dataLimite.setDate(dataLimite.getDate() + 45); // Soma 45 dias à data de compra
+
+        const tempoRestante = dataLimite - new Date(); // Diferença entre a data limite e a data atual
+        const diasRestantes = Math.floor(tempoRestante / (1000 * 60 * 60 * 24)); // Converte para dias
+
+        return diasRestantes > 0 ? `${diasRestantes} dias restantes` : 'Investimento expirado';
+    }
+
+    // Função para carregar os investimentos a partir da API
+    async function carregarInvestimentos() {
+        const userId = localStorage.getItem('user_id'); // Recupera o ID do usuário logado
+
+        if (!userId) {
+            document.getElementById('investimentos-lista').innerHTML = '<p>Usuário não logado. Faça o login para continuar.</p>';
+            return;
+        }
+
+        try {
+            // Faz a requisição para buscar os produtos adquiridos pelo usuário
+            const response = await fetch(`https://meuappi.onrender.com/produtos?usuarioId=${userId}`);
+
+            if (!response.ok) throw new Error('Erro ao carregar os investimentos');
+
+            const produtos = await response.json();
+
+            if (produtos.length === 0) {
+                document.getElementById('investimentos-lista').innerHTML = '<p>Nenhum investimento realizado ainda.</p>';
+                return;
+            }
+
+            let html = '';
+
+            // Para cada produto adquirido, exibe o nome, preço e a contagem regressiva
+            produtos.forEach(produto => {
+                const diasRestantes = calcularContagemRegressiva(produto.dataCompra);
+
+                html += `
+                    <div class="investimento">
+                        <h2>${produto.nome}</h2>
+                        <p class="detalhes">Preço: AKZ ${produto.preco}</p>
+                        <p class="contagem">${diasRestantes}</p>
+                    </div>
+                `;
+            });
+
+            document.getElementById('investimentos-lista').innerHTML = html;
+        } catch (error) {
+            console.error('Erro:', error);
+            document.getElementById('investimentos-lista').innerHTML = '<p>Ocorreu um erro ao carregar os investimentos. Tente novamente.</p>';
+        }
+    }
+
+    // Carregar os investimentos quando a página for carregada
+    window.onload = carregarInvestimentos;
+</script>
+
+</body>
+</html>

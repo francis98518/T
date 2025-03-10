@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Equipe</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <style>
+        .menu a {
+            text-decoration: none;
+            color: #555;
+            text-align: center;
+            font-size: 14px;
+            margin: 0 10px;
+        }
+
+        .menu a img {
+            width: 30px;
+            height: 30px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container mt-4">
+        <h4 class="text-center">Minha Equipe</h4>
+
+        <div class="card bg-danger text-white p-3">
+            <h3 id="total-recarga">AKZ 0.00</h3>
+            <p id="total-pessoas">0 (Usuários) | AKZ 0.00</p>
+        </div>
+
+        <div class="card mt-3 p-3">
+            <p><strong>Link de convite:</strong> <a id="invite-link" href="#">https://t-mob.pro/...</a></p>
+            <button class="btn btn-danger" id="copy-btn">Copiar</button>
+        </div>
+
+        <div class="card mt-3 p-3">
+            <h5>Recompensas de Convite</h5>
+            <button class="btn btn-danger">Ver</button>
+        </div>
+
+        <div class="mt-3">
+            <span class="badge bg-danger">Nível 1(1) 28%</span>
+            <span class="badge bg-secondary">Nível 2(0) 0%</span>
+            <span class="badge bg-secondary">Nível 3(0) 0%</span>
+        </div>
+
+        <!-- Tabela para exibir usuários convidados -->
+        <div class="card mt-3 p-3">
+            <h5>Usuários Convidados</h5>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Telefone</th>
+                        <th>Saldo</th>
+                    </tr>
+                </thead>
+                <tbody id="user-list">
+                    <!-- Lista de usuários convidados será inserida aqui -->
+                </tbody>
+            </table>
+        </div>
+
+        <nav class="navbar fixed-bottom bg-light">
+            <div class="container d-flex justify-content-around menu">
+                <a href="home.html">
+                    <img src="https://t-mob.pro/public/img/en_us.fc5456b0.png" alt="Início"><br>
+                    Início
+                </a>
+                <a href="produtos.html">
+                    <img src="https://cdn-icons-png.flaticon.com/512/869/869636.png" alt="Produtos"><br>
+                    Produtos
+                </a>
+                <a href="equipe.html">
+                    <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Equipe"><br>
+                    Equipe
+                </a>
+                <a href="perfil.html">
+                    <img src="https://cdn-icons-png.flaticon.com/512/1077/1077063.png" alt="Perfil"><br>
+                    Perfil
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <script>
+        // Função para buscar o código de convite do usuário logado
+        function getInviteCodeFromLocalStorage() {
+            const userData = JSON.parse(localStorage.getItem('user_data'));
+
+            if (userData && userData.codigo_convite) {
+                // O código de convite do usuário logado
+                const inviteLink = `https://t-mob.pro/cadastro.html?codigo_convite=${userData.codigo_convite}`;
+                document.getElementById('invite-link').href = inviteLink;
+                document.getElementById('invite-link').textContent = inviteLink;
+
+                // Chama a função para buscar os usuários que se cadastraram com o código de convite
+                fetchUsersByInviteCode(userData.codigo_convite);
+            } else {
+                console.log("Código de convite não encontrado no localStorage");
+                document.getElementById('invite-link').textContent = "Código de convite não disponível.";
+            }
+        }
+
+        // Função para buscar os usuários que se cadastraram com o código de convite do usuário logado
+        function fetchUsersByInviteCode(codigoConvite) {
+            // Fazendo a requisição para a API para obter todos os usuários
+            fetch('https://meuappi.onrender.com/usuarios')
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Usuários retornados pela API:", data); // Verificando os dados retornados pela API
+
+                    // Filtra os usuários que têm o código de convite referido igual ao código do usuário logado
+                    const users = data.filter(user => user.codigo_convite_referido === codigoConvite);
+
+                    // Remover o usuário logado da lista
+                    const userData = JSON.parse(localStorage.getItem('user_data'));
+                    const filteredUsers = users.filter(user => user.id !== userData.id);
+
+                    // Atualizando o total de pessoas e saldo no cartão
+                    const totalPessoas = filteredUsers.length;
+                    const totalSaldo = filteredUsers.reduce((total, user) => {
+                        // Garantindo que o saldo seja um número válido
+                        const saldoValue = user.saldo ? parseFloat(user.saldo) : 0;
+                        return total + saldoValue;
+                    }, 0).toFixed(2);
+
+                    // Atualizando os dados na interface
+                    document.getElementById('total-pessoas').textContent = `${totalPessoas} (Usuários) | AKZ ${totalSaldo}`;
+                    document.getElementById('total-recarga').textContent = `AKZ ${totalSaldo}`;
+
+                    // Populando a tabela de usuários convidados
+                    const userList = document.getElementById('user-list');
+                    userList.innerHTML = ''; // Limpa a tabela antes de adicionar novas linhas
+                    if (filteredUsers.length > 0) {
+                        filteredUsers.forEach(user => {
+                            const row = `<tr>
+                                <td>${user.telefone || 'Não especificado'}</td>
+                                <td>AKZ ${user.saldo}</td>
+                            </tr>`;
+                            userList.innerHTML += row;
+                        });
+                    } else {
+                        userList.innerHTML = '<tr><td colspan="2">Nenhum usuário convidado encontrado.</td></tr>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao buscar dados da API:', error);
+                });
+        }
+
+        // Função para copiar o link de convite
+        function copyInviteLink() {
+            const inviteLink = document.getElementById('invite-link').href;
+            const textarea = document.createElement('textarea');
+            textarea.value = inviteLink;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            alert('Link de convite copiado para a área de transferência!');
+        }
+
+        // Ao carregar a página, busca o código de convite e os usuários referidos
+        window.onload = function() {
+            getInviteCodeFromLocalStorage();
+        };
+
+        // Adiciona o evento de clique para copiar o link
+        document.getElementById('copy-btn').addEventListener('click', copyInviteLink);
+    </script>
+</body>
+</html>

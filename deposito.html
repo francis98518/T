@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caixa de Pagamento</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #a100ff, #ff0080);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            color: black;
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+
+        .amount {
+            font-size: 24px;
+            font-weight: bold;
+            color: black;
+        }
+
+        .bank-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .bank-card {
+            background: linear-gradient(135deg, #5500ff, #ff0080);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .bank-card img {
+            width: 50px;
+            margin-bottom: 5px;
+        }
+
+        .iban {
+            display: none;
+            margin-top: 10px;
+            color: #ffcc00;
+            font-size: 14px;
+        }
+
+        .show-iban {
+            cursor: pointer;
+            color: #00cc99;
+            margin-top: 10px;
+        }
+
+        .copy-btn {
+            background: #007bff;
+            color: white;
+            padding: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .copy-btn:hover {
+            background: #0056b3;
+        }
+
+        .upload-section {
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .upload-box {
+            background: #eeeeee;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 10px;
+            cursor: pointer;
+            border: 2px dashed #ccc;
+        }
+
+        .upload-box:hover {
+            background: #dddddd;
+        }
+
+        .upload-box img {
+            width: 30px;
+        }
+
+        #receipt {
+            display: none;
+        }
+
+        .back-button {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-align: left;
+            cursor: pointer;
+            border: none;
+            display: inline-block; /* Garante que o botão fique na mesma linha */
+            margin-left: 0; /* Garante que o botão fique na margem esquerda */
+            position: absolute; /* Posiciona o botão de forma fixa no topo à esquerda */
+            top: 20px; /* Define a distância do topo */
+            left: 20px; /* Define a distância da esquerda */
+        }
+
+        .back-button:hover {
+            background-color: #444;
+        }
+
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 10px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            font-size: 17px;
+        }
+
+        .toast.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
+
+    </style>
+</head>
+<body>
+
+    <button class="back-button" onclick="goBack()">‹</button>
+
+    <h2> Carregamentos</h2>
+
+    <div class="container">
+        <p>Montante</p>
+        <div class="amount" id="amountDisplay">KZ 0</div>
+
+        <div class="bank-options">
+            <div class="bank-card">
+                <p>BAI: Zacarias</p>
+                <div class="iban" id="ibanBAI">004000005396250210138</div>
+                <span class="show-iban" onclick="toggleIBAN('BAI')">Ver🙈</span>
+                <button class="copy-btn" onclick="copyIBAN('ibanBAI')">Copiar IBAN</button>
+            </div>
+            <div class="bank-card">
+                <p>BFA: Mauricio</p>
+                <div class="iban" id="ibanBFA">000600007208900630173</div>
+                <span class="show-iban" onclick="toggleIBAN('BFA')">Ver🙈</span>
+                <button class="copy-btn" onclick="copyIBAN('ibanBFA')">Copiar IBAN</button>
+            </div>
+            <div class="bank-card">
+                <p>Outros: Sangonde</p>
+                <div class="iban" id="ibanBIC">000600007208900630173</div>
+                <span class="show-iban" onclick="toggleIBAN('BIC')">Ver🙈</span>
+                <button class="copy-btn" onclick="copyIBAN('ibanBIC')">Copiar IBAN</button>
+            </div>
+            <div class="bank-card">
+                <p>ATLANTICO: Ngunza</p>
+                <div class="iban" id="ibanATLANTICO">005500001138151010141</div>
+                <span class="show-iban" onclick="toggleIBAN('ATLANTICO')">Ver🙈</span>
+                <button class="copy-btn" onclick="copyIBAN('ibanATLANTICO')">Copiar IBAN</button>
+            </div>
+        </div>
+
+        <div class="upload-section">
+            <p>Por favor, carregue o recibo da transação após o pagamento</p>
+            <label for="receipt" class="upload-box">
+                <img src="https://t-mob.pro/public/img/home_menu_widthdraw@3x.9fe68243.png" alt="Upload Icon">
+                <p>Clique em Carregar</p>
+            </label>
+            <input type="file" id="receipt" onchange="uploadReceipt(event)">
+        </div>
+    </div>
+
+    <div id="toast" class="toast">Recibo carregado com sucesso! Redirecionando...</div>
+
+    <script>
+        // Exibir o valor armazenado de recarga
+        const amount = localStorage.getItem("amount");
+        document.getElementById("amountDisplay").textContent = "KZ " + (amount || "0");
+
+        // Função para mostrar/ocultar IBAN
+        function toggleIBAN(bank) {
+            const ibanElement = document.getElementById("iban" + bank);
+            ibanElement.style.display = ibanElement.style.display === "block" ? "none" : "block";
+        }
+
+        // Função para copiar o IBAN
+        function copyIBAN(ibanId) {
+            const ibanText = document.getElementById(ibanId).textContent;
+
+            // Criar um input temporário para copiar
+            const tempInput = document.createElement("input");
+            tempInput.value = ibanText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+
+            // Exibir toast de sucesso
+            showToast("IBAN copiado com sucesso!");
+        }
+
+        // Função para exibir o toast
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.className = "toast show";
+            setTimeout(() => {
+                toast.className = toast.className.replace("show", "");
+            }, 3000);
+        }
+
+        // Função para voltar à página anterior
+        function goBack() {
+            window.location.href = "recarregar.html";
+        }
+
+        // Função para carregar o recibo
+        function uploadReceipt(event) {
+            if (event.target.files.length > 0) {
+                showToast("Recibo carregado com sucesso! Redirecionando...");
+                setTimeout(() => {
+                    window.location.href = "home.html"; // Redireciona após 3 segundos
+                }, 3000);
+            }
+        }
+    </script>
+
+</body>
+</html>

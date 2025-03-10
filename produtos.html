@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T-Mobile Digital</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+        }
+        .container {
+            width: 90%;
+            margin: auto;
+            max-width: 500px;
+        }
+        .produto {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex; /* Alterado para flexbox para manter a imagem e os detalhes lado a lado */
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .produto img {
+            width: 100px;
+            margin-right: 15px;
+            flex-shrink: 0; /* Impede a imagem de encolher */
+        }
+        .produto h2 {
+            color: #d9006c;
+            font-size: 18px;
+            margin: 0;
+        }
+        .preco {
+            color: #ff6600;
+            font-size: 22px;
+            font-weight: bold;
+        }
+        .detalhes {
+            font-size: 14px;
+            color: #555;
+        }
+        .botao {
+            display: block;
+            width: 100%;
+            background: #d9006c;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .botao:hover {
+            background: #b40056;
+        }
+        .menu {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .menu a {
+            text-decoration: none;
+            color: #555;
+            font-size: 14px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Alinha os itens no centro */
+        }
+        .menu a img {
+            margin-bottom: 5px; /* Adiciona um espaço entre o ícone e o texto */
+            height: 30px; /* Altere o tamanho do logo conforme necessário */
+        }
+        /* Estilo do Toast - Centralizado */
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%); /* Centraliza o toast */
+            font-size: 17px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Produtos</h1>
+
+    <div class="produto">
+        <img src="https://t-mob.pro/public/upload/package/1740526021Kge.jpg" alt="T Mobile 1">
+        <div>
+            <h2>T Mobile 1</h2>
+            <p class="preco">AKZ 500.00 Retorno Diário</p>
+            <p class="detalhes">Ciclo: 45 Dias<br>Preço: AKZ 5000.00</p>
+            <button class="botao" onclick="investir(5000, 'T Mobile 1', 500)">Adquirir</button>
+        </div>
+    </div>
+
+    <div class="produto">
+        <img src="https://t-mob.pro/public/upload/package/1740526169qpB.jpeg" alt="T Mobile 2">
+        <div>
+            <h2>T Mobile 2</h2>
+            <p class="preco">AKZ 1000.00 Retorno Diário</p>
+            <p class="detalhes">Ciclo: 45 Dias<br>Preço: AKZ 10000.00</p>
+            <button class="botao" onclick="investir(10000, 'T Mobile 2', 1000)">Adquirir</button>
+        </div>
+    </div>
+
+    <div class="produto">
+        <img src="https://t-mob.pro/public/upload/package/1740526047BFG.jpg" alt="T Mobile 3">
+        <div>
+            <h2>T Mobile 3</h2>
+            <p class="preco">AKZ 3000.00 Retorno Diário</p>
+            <p class="detalhes">Ciclo: 45 Dias<br>Preço: AKZ 30000.00</p>
+            <button class="botao" onclick="investir(30000, 'T Mobile 3', 3000)">Adquirir</button>
+        </div>
+    </div>
+
+    <div class="produto">
+        <img src="https://t-mob.pro/public/upload/package/17405262392zA.jpeg" alt="T Mobile 4">
+        <div>
+            <h2>T Mobile 4</h2>
+            <p class="preco">AKZ 5000.00 Retorno Diário</p>
+            <p class="detalhes">Ciclo: 45 Dias<br>Preço: AKZ 50000.00</p>
+            <button class="botao" onclick="investir(50000, 'T Mobile 4', 5000)">Adquirir</button>
+        </div>
+    </div>
+
+    <div class="produto">
+        <img src="https://t-mob.pro/public/upload/package/1740527080MuB.jpg" alt="T Mobile 5">
+        <div>
+            <h2>T Mobile 5</h2>
+            <p class="preco">AKZ 10000.00 Retorno Diário</p>
+            <p class="detalhes">Ciclo: 45 Dias<br>Preço: AKZ 100000.00</p>
+            <button class="botao" onclick="investir(100000, 'T Mobile 5', 10000)">Adquirir</button>
+        </div>
+    </div>
+
+    <div class="produto">
+        <img src="https://t-mob.pro/public/upload/package/1740527131j2l.jpg" alt="T Mobile 6">
+        <div>
+            <h2>T Mobile 6</h2>
+            <p class="preco">AKZ 30000.00 Retorno Diário</p>
+            <p class="detalhes">Ciclo: 45 Dias<br>Preço: AKZ 300000.00</p>
+            <button class="botao" onclick="investir(300000, 'T Mobile 6', 30000)">Adquirir</button>
+        </div>
+    </div>
+</div>
+
+<div class="menu">
+    <a href="home.html">
+        <img src="https://t-mob.pro/public/img/en_us.fc5456b0.png" alt="Início">
+        Início
+    </a>
+    <a href="produtos.html">
+        <img src="https://cdn-icons-png.flaticon.com/512/869/869636.png" alt="Produtos">
+        Produtos
+    </a>
+    <a href="equipe.html">
+        <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Equipe">
+        Equipe
+    </a>
+    <a href="perfil.html">
+        <img src="https://cdn-icons-png.flaticon.com/512/1077/1077063.png" alt="Perfil">
+        Perfil
+    </a>
+</div>
+
+<!-- Toast Notification -->
+<div id="toast" class="toast"></div>
+
+<script>
+    // Função para mostrar o Toast
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = "toast show"; // Adiciona a classe "show" para exibir o toast
+
+        // Remove o toast após 3 segundos
+        setTimeout(function () {
+            toast.className = toast.className.replace("show", "");
+        }, 3000);
+    }
+
+    // Função para investir
+    async function investir(precoProduto, nomeProduto, retornoDiario) {
+        try {
+            const userId = localStorage.getItem('user_id'); // Usando a chave correta
+
+            if (!userId) {
+                showToast("Usuário não logado. Faça o login para continuar.");
+                return;
+            }
+
+            const responseUsuario = await fetch(`https://meuappi.onrender.com/usuarios/${userId}`);
+            const usuario = await responseUsuario.json();
+
+            if (usuario.saldo >= precoProduto) {
+                const novoSaldo = usuario.saldo - precoProduto;
+                const usuarioAtualizado = { saldo: novoSaldo };
+
+                const updateUsuarioResponse = await fetch(`https://meuappi.onrender.com/usuarios/${userId}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(usuarioAtualizado)
+                });
+
+                if (!updateUsuarioResponse.ok) throw new Error('Erro ao atualizar o saldo do usuário');
+
+                const produto = {
+                    nome: nomeProduto,
+                    retorno: retornoDiario,
+                    preco: precoProduto
+                };
+
+                const addProdutoResponse = await fetch('https://meuappi.onrender.com/produtos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(produto)
+                });
+
+                if (!addProdutoResponse.ok) throw new Error('Erro ao adicionar produto');
+
+                showToast('Produto adquirido com sucesso! Você terá sua renda extra.');
+            } else {
+                showToast('Saldo insuficiente. Por favor, recarregue sua conta.');
+            }
+        } catch (error) {
+            console.error('Erro:', error);
+            showToast('Ocorreu um erro. Tente novamente.');
+        }
+    }
+</script>
+
+</body>
+</html>
