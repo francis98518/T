@@ -75,15 +75,40 @@
 </div>
 
 <script>
-    // Função para calcular a contagem regressiva de 45 dias
+    // Função para calcular a contagem regressiva de 45 dias (em dias, horas, minutos e segundos)
     function calcularContagemRegressiva(dataCompra) {
         const dataLimite = new Date(dataCompra);
         dataLimite.setDate(dataLimite.getDate() + 45); // Soma 45 dias à data de compra
 
-        const tempoRestante = dataLimite - new Date(); // Diferença entre a data limite e a data atual
-        const diasRestantes = Math.floor(tempoRestante / (1000 * 60 * 60 * 24)); // Converte para dias
+        function atualizarContagem() {
+            const agora = new Date();
+            const tempoRestante = dataLimite - agora; // Diferença entre a data limite e a data atual
 
-        return diasRestantes > 0 ? `${diasRestantes} dias restantes` : 'Investimento expirado';
+            if (tempoRestante <= 0) {
+                document.getElementById('investimentos-lista').innerHTML = 'Investimento expirado';
+                clearInterval(intervalo); // Interrompe a atualização quando a contagem chegar a zero
+                return;
+            }
+
+            const diasRestantes = Math.floor(tempoRestante / (1000 * 60 * 60 * 24)); // Converte para dias
+            const horasRestantes = Math.floor((tempoRestante % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); // Converte para horas
+            const minutosRestantes = Math.floor((tempoRestante % (1000 * 60 * 60)) / (1000 * 60)); // Converte para minutos
+            const segundosRestantes = Math.floor((tempoRestante % (1000 * 60)) / 1000); // Converte para segundos
+
+            const contagem = `${diasRestantes}d ${horasRestantes}h ${minutosRestantes}m ${segundosRestantes}s restantes`;
+
+            return contagem;
+        }
+
+        // Inicia a atualização da contagem regressiva a cada segundo
+        const intervalo = setInterval(() => {
+            const contagem = atualizarContagem();
+            document.querySelectorAll('.contagem').forEach(contagemElemento => {
+                contagemElemento.innerHTML = contagem;
+            });
+        }, 1000);
+
+        return atualizarContagem();
     }
 
     // Função para carregar os investimentos a partir da API
