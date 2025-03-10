@@ -90,6 +90,7 @@
     async function carregarInvestimentos() {
         const userId = localStorage.getItem('user_id'); // Recupera o ID do usuário logado
 
+        // Verifica se o usuário está logado
         if (!userId) {
             document.getElementById('investimentos-lista').innerHTML = '<p>Usuário não logado. Faça o login para continuar.</p>';
             return;
@@ -103,6 +104,7 @@
 
             const produtos = await response.json();
 
+            // Caso não haja produtos adquiridos
             if (produtos.length === 0) {
                 document.getElementById('investimentos-lista').innerHTML = '<p>Nenhum investimento realizado ainda.</p>';
                 return;
@@ -132,6 +134,14 @@
 
     // Carregar os investimentos quando a página for carregada
     window.onload = carregarInvestimentos;
+
+    // Função para login (apenas exemplo de como poderia funcionar)
+    function login() {
+        const userId = "123"; // Este ID seria obtido após a autenticação real do usuário
+        localStorage.setItem('user_id', userId); // Armazenar o ID do usuário no localStorage
+        alert("Usuário logado com sucesso!");
+    }
+
 </script>
 
 </body>
