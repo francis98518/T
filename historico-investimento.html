@@ -78,7 +78,7 @@
     // Função para calcular a contagem regressiva de 45 dias (em dias, horas, minutos e segundos)
     function calcularContagemRegressiva(dataCompra) {
         const dataLimite = new Date(dataCompra);
-        dataLimite.setDate(dataLimite.getDate() + 45); // Soma 45 dias à data de compra
+        dataLimite.setDate(dataLimite.getDate() + 5); // Soma 45 dias à data de compra
 
         function atualizarContagem() {
             const agora = new Date();
