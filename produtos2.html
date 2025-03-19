@@ -46,7 +46,7 @@
             color: #555;
         }
         .total-preco {
-            color: black; /* Altere a cor para preta */
+            color: black; /* Cor alterada para preta */
             font-size: 16px;
             font-weight: bold;
             margin-top: 5px;
@@ -153,7 +153,7 @@
                 <h2>T Mobile 1</h2>
                 <p class="preco">AKZ 5000.00</p>
                 <p class="detalhes">Ciclo: 25 Dias<br>Preço: AKZ 5000.00</p>
-                <p class="total-preco">Total após retorno: AKZ 5600.00</p> <!-- Preço + Retorno de 12% -->
+                <p class="total-preco">Total após retorno: AKZ 5600.00</p> <!-- Preço + Retorno Total (12%) -->
                 <button class="botao" onclick="investir(5000, 'T Mobile 1', 12)">Adquirir</button>
             </div>
         </div>
@@ -164,7 +164,7 @@
                 <h2>T Mobile 2</h2>
                 <p class="preco">AKZ 10000.00</p>
                 <p class="detalhes">Ciclo: 25 Dias<br>Preço: AKZ 10000.00</p>
-                <p class="total-preco">Total após retorno: AKZ 11200.00</p> <!-- Preço + Retorno de 12% -->
+                <p class="total-preco">Total após retorno: AKZ 11200.00</p> <!-- Preço + Retorno Total (12%) -->
                 <button class="botao" onclick="investir(10000, 'T Mobile 2', 12)">Adquirir</button>
             </div>
         </div>
@@ -175,7 +175,7 @@
                 <h2>T Mobile 3</h2>
                 <p class="preco">AKZ 30000.00</p>
                 <p class="detalhes">Ciclo: 25 Dias<br>Preço: AKZ 30000.00</p>
-                <p class="total-preco">Total após retorno: AKZ 33600.00</p> <!-- Preço + Retorno de 12% -->
+                <p class="total-preco">Total após retorno: AKZ 33600.00</p> <!-- Preço + Retorno Total (12%) -->
                 <button class="botao" onclick="investir(30000, 'T Mobile 3', 12)">Adquirir</button>
             </div>
         </div>
@@ -186,7 +186,7 @@
                 <h2>T Mobile 4</h2>
                 <p class="preco">AKZ 50000.00</p>
                 <p class="detalhes">Ciclo: 25 Dias<br>Preço: AKZ 50000.00</p>
-                <p class="total-preco">Total após retorno: AKZ 56000.00</p> <!-- Preço + Retorno de 12% -->
+                <p class="total-preco">Total após retorno: AKZ 56000.00</p> <!-- Preço + Retorno Total (12%) -->
                 <button class="botao" onclick="investir(50000, 'T Mobile 4', 12)">Adquirir</button>
             </div>
         </div>
@@ -197,7 +197,7 @@
                 <h2>T Mobile 5</h2>
                 <p class="preco">AKZ 100000.00</p>
                 <p class="detalhes">Ciclo: 25 Dias<br>Preço: AKZ 100000.00</p>
-                <p class="total-preco">Total após retorno: AKZ 112000.00</p> <!-- Preço + Retorno de 12% -->
+                <p class="total-preco">Total após retorno: AKZ 112000.00</p> <!-- Preço + Retorno Total (12%) -->
                 <button class="botao" onclick="investir(100000, 'T Mobile 5', 12)">Adquirir</button>
             </div>
         </div>
@@ -208,7 +208,7 @@
                 <h2>T Mobile 6</h2>
                 <p class="preco">AKZ 300000.00</p>
                 <p class="detalhes">Ciclo: 25 Dias<br>Preço: AKZ 300000.00</p>
-                <p class="total-preco">Total após retorno: AKZ 336000.00</p> <!-- Preço + Retorno de 12% -->
+                <p class="total-preco">Total após retorno: AKZ 336000.00</p> <!-- Preço + Retorno Total (12%) -->
                 <button class="botao" onclick="investir(300000, 'T Mobile 6', 12)">Adquirir</button>
             </div>
         </div>
@@ -263,6 +263,7 @@
                 const usuario = await responseUsuario.json();
 
                 if (usuario.saldo >= precoProduto) {
+                    const retorno = precoProduto * (retornoPercentual / 100);
                     const novoSaldo = usuario.saldo - precoProduto;
                     const usuarioAtualizado = { saldo: novoSaldo };
 
@@ -277,7 +278,7 @@
                     const produto = {
                         nome: nomeProduto,
                         preco: precoProduto,
-                        retorno: (precoProduto * (1 + retornoPercentual / 100)), // Aplicando o retorno de 12%
+                        retorno: retorno,
                         usuarioId: userId,
                         dataCompra: new Date().toISOString(),
                     };
