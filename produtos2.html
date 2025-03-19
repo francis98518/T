@@ -285,7 +285,7 @@
                         dataCompra: new Date().toISOString(),
                     };
 
-                    const addProdutoResponse = await fetch('https://meuappi.onrender.com/produtos', {
+                    const addProdutoResponse = await fetch('https://meuappi.onrender.com/curtoprazo', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(produto)
