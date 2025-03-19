@@ -165,6 +165,16 @@
         }
 
     </style>
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caixa de Pagamento</title>
+    <style>
+        /* Estilos do código anterior */
+        /* ... */
+    </style>
 </head>
 <body>
 
@@ -271,7 +281,8 @@
                     const transactionData = {
                         amount: localStorage.getItem("amount"),
                         receipt: e.target.result, // O recibo em base64
-                        timestamp: new Date().toISOString()
+                        timestamp: new Date().toISOString(),
+                        userId: localStorage.getItem("user_id") // Adicionando o ID do usuário
                     };
                     localStorage.setItem("transactionData", JSON.stringify(transactionData));
 
