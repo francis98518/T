@@ -165,16 +165,6 @@
         }
 
     </style>
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caixa de Pagamento</title>
-    <style>
-        /* Estilos do código anterior */
-        /* ... */
-    </style>
 </head>
 <body>
 
@@ -185,33 +175,6 @@
     <div class="container">
         <p>Montante</p>
         <div class="amount" id="amountDisplay">KZ 0</div>
-
-        <div class="bank-options">
-            <div class="bank-card">
-                <p>BAI: Zacarias</p>
-                <div class="iban" id="ibanBAI">004000005396250210138</div>
-                <span class="show-iban" onclick="toggleIBAN('BAI')">Ver🙈</span>
-                <button class="copy-btn" onclick="copyIBAN('ibanBAI')">Copiar IBAN</button>
-            </div>
-            <div class="bank-card">
-                <p>BFA: Mauricio</p>
-                <div class="iban" id="ibanBFA">000600007208900630173</div>
-                <span class="show-iban" onclick="toggleIBAN('BFA')">Ver🙈</span>
-                <button class="copy-btn" onclick="copyIBAN('ibanBFA')">Copiar IBAN</button>
-            </div>
-            <div class="bank-card">
-                <p>Outros: Sangonde</p>
-                <div class="iban" id="ibanBIC">000600007208900630173</div>
-                <span class="show-iban" onclick="toggleIBAN('BIC')">Ver🙈</span>
-                <button class="copy-btn" onclick="copyIBAN('ibanBIC')">Copiar IBAN</button>
-            </div>
-            <div class="bank-card">
-                <p>ATLANTICO: Não disponivel</p>
-                <div class="iban" id="ibanATLANTICO"></div>
-                <span class="show-iban" onclick="toggleIBAN('ATLANTICO')">Ver🙈</span>
-                <button class="copy-btn" onclick="copyIBAN('ibanATLANTICO')">Copiar IBAN</button>
-            </div>
-        </div>
 
         <div class="upload-section">
             <p>Por favor, carregue o recibo da transação após o pagamento</p>
@@ -230,38 +193,6 @@
         const amount = localStorage.getItem("amount");
         document.getElementById("amountDisplay").textContent = "KZ " + (amount || "0");
 
-        // Função para mostrar/ocultar IBAN
-        function toggleIBAN(bank) {
-            const ibanElement = document.getElementById("iban" + bank);
-            ibanElement.style.display = ibanElement.style.display === "block" ? "none" : "block";
-        }
-
-        // Função para copiar o IBAN
-        function copyIBAN(ibanId) {
-            const ibanText = document.getElementById(ibanId).textContent;
-
-            // Criar um input temporário para copiar
-            const tempInput = document.createElement("input");
-            tempInput.value = ibanText;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand("copy");
-            document.body.removeChild(tempInput);
-
-            // Exibir toast de sucesso
-            showToast("IBAN copiado com sucesso!");
-        }
-
-        // Função para exibir o toast
-        function showToast(message) {
-            const toast = document.getElementById("toast");
-            toast.textContent = message;
-            toast.className = "toast show";
-            setTimeout(() => {
-                toast.className = toast.className.replace("show", "");
-            }, 3000);
-        }
-
         // Função para voltar à página anterior
         function goBack() {
             window.location.href = "recarregar.html";
@@ -277,12 +208,15 @@
                     // Mostrar o toast de sucesso
                     showToast("Recibo carregado com sucesso!");
 
+                    // Obter o ID do usuário logado
+                    const userId = localStorage.getItem("user_id");
+
                     // Salvar os dados no LocalStorage
                     const transactionData = {
                         amount: localStorage.getItem("amount"),
                         receipt: e.target.result, // O recibo em base64
                         timestamp: new Date().toISOString(),
-                        userId: localStorage.getItem("user_id") // Adicionando o ID do usuário
+                        userId: userId // ID do usuário
                     };
                     localStorage.setItem("transactionData", JSON.stringify(transactionData));
 
@@ -292,6 +226,16 @@
 
                 reader.readAsDataURL(file); // Converte o recibo para base64
             }
+        }
+
+        // Função para exibir o toast
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.className = "toast show";
+            setTimeout(() => {
+                toast.className = toast.className.replace("show", "");
+            }, 3000);
         }
 
         // Função para enviar os dados para a API
