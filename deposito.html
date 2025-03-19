@@ -190,14 +190,14 @@
                 <button class="copy-btn" onclick="copyIBAN('ibanBFA')">Copiar IBAN</button>
             </div>
             <div class="bank-card">
-                <p>BIC: Inok</p>
-                <div class="iban" id="ibanBIC">005100004982741710186</div>
+                <p>Outros: Sangonde</p>
+                <div class="iban" id="ibanBIC">000600007208900630173</div>
                 <span class="show-iban" onclick="toggleIBAN('BIC')">Ver🙈</span>
                 <button class="copy-btn" onclick="copyIBAN('ibanBIC')">Copiar IBAN</button>
             </div>
             <div class="bank-card">
-                <p>ATLANTICO: Ndelessi</p>
-                <div class="iban" id="ibanATLANTICO">005500005143884810115</div>
+                <p>ATLANTICO: Não disponivel</p>
+                <div class="iban" id="ibanATLANTICO"></div>
                 <span class="show-iban" onclick="toggleIBAN('ATLANTICO')">Ver🙈</span>
                 <button class="copy-btn" onclick="copyIBAN('ibanATLANTICO')">Copiar IBAN</button>
             </div>
@@ -276,7 +276,6 @@
                     localStorage.setItem("transactionData", JSON.stringify(transactionData));
 
                     // Enviar para o servidor
-                    // (exemplo fictício, você deve fazer uma requisição POST para o backend com o recibo)
                     fetch("https://meuappi.onrender.com/depositos", {
                         method: "POST",
                         body: JSON.stringify(transactionData),
@@ -284,8 +283,9 @@
                             "Content-Type": "application/json"
                         }
                     }).then(() => {
+                        // Redirecionar após o sucesso do envio
                         setTimeout(() => {
-                            window.location.href = "confirmação.html"; // Redirecionar após o upload
+                            window.location.href = "home.html"; // Redireciona para home.html após o upload
                         }, 1000);
                     }).catch((err) => {
                         console.error("Erro ao carregar recibo:", err);
